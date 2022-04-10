@@ -4,6 +4,7 @@
 <?php 
 
     echo getenv('SS_DB_HOST');
+    echo apaache_getenv('SS_DB_HOST');
 
 
 // try {
