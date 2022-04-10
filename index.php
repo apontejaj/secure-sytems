@@ -2,9 +2,11 @@
 
 
 <?php 
+    include 'vars.php';
 
-    echo getenv('SS_DB_HOST');
-    echo apaache_getenv('SS_DB_HOST');
+    echo $SS_DB_HOST;
+
+
 
 
 // try {
