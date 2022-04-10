@@ -1,33 +1,11 @@
-<head>
-    <style>
-        table, th, td {
-            border: 1px solid black;
-            border-collapse: collapse;
-        }
-    </style>
-</head>
-
-
-<h1>Add your comment to the forum</h1>
-
-<form action="newEntry.php" method="post">
-    Name: <input type="text" name="name"><br>
-    Content: <input type="text" name="content"><br>
-    <input type="submit">
-</form>
-
-
-<table>
-    <tr>
-        <th>Date</th>
-        <th>Author</th>
-        <th>Post</th>
-    </tr>
 <?php 
-    include '../vars.php';
+    include '../../vars.php';
 
     
-    
+
+    // echo $_POST['name'];
+    // echo $_POST['content'];
+
     try {
         $host = $SS_DB_HOST;
         $dbname = $SS_DB_NAME;
@@ -36,19 +14,17 @@
         # MySQL with PDO_MYSQL
         $DBH = new PDO("mysql:host=$host;dbname=$dbname", $dbuser, $pass);
 
-        
-        foreach ($DBH->query('SELECT * FROM forum;') as $row){
-            echo '<tr>';            
-            echo '<td>' . $row['date_posted'] . '</td>';
-            echo '<td>' . $row['author'] . '</td>';
-            echo '<td>' . $row['post'] . '</td>';
-            echo '</tr>';
-        }
-        
+        $DBH->query("INSERT INTO forum (author, post) VALUES ('". $_POST['name'] ."','". $_POST['content'] ."');");
 
         $DBH = null;
 
     } catch(PDOException $e) {echo $e->getMessage();}  
+
+    header("Location: index.php");
+    die();
+    
+    
+
 
     // $sql = "SELECT * FROM `switch` WHERE `user` = ?;";
     // $sth = $DBH->prepare($sql);
@@ -67,4 +43,3 @@
 
     // //$status = $result['status'];
 ?>
-</table>
