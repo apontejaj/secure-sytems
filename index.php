@@ -21,17 +21,15 @@
         # MySQL with PDO_MYSQL
         $DBH = new PDO("mysql:host=$host;dbname=$dbname", $dbuser, $pass);
 
-        // //Kill the connection with a KILL Statement.
-
-        echo '<tr>';
+        
         foreach ($DBH->query('SELECT * FROM forum;') as $row){
-            
+            echo '<tr>';            
             echo '<td>' . $row['date_posted'] . '</td>';
             echo '<td>' . $row['author'] . '</td>';
             echo '<td>' . $row['post'] . '</td>';
-            
+            echo '</tr>';
         }
-        echo '</tr>';
+        
 
         $DBH = null;
 
