@@ -36,9 +36,20 @@
             # MySQL with PDO_MYSQL
             $DBH = new PDO("mysql:host=$host;dbname=$dbname", $dbuser, $pass);
     
+            $sql = "SELECT * FROM forum WHERE author LIKE ? OR post LIKE ?;";
+            $sth = $DBH->prepare($sql);
+
+            $name = '%'.$_GET['name'].'%';
+            $sth->bindParam(1, $name, PDO::PARAM_STR);
+
+            $content = '%'.$_GET['content'].'%';
+            $sth->bindParam(2, $content, PDO::PARAM_STR);
+
+            $sth->execute();
+
+            $result = $sth->fetchAll(PDO::FETCH_ASSOC);
             
-            
-            foreach ($DBH->query("SELECT * FROM forum WHERE author LIKE '%" . $_GET['name'] . "%' OR post LIKE '%" . $_GET['content'] ."%';") as $row){
+            foreach ($result as $row){
                 echo '<tr>';            
                 echo '<td>' . $row['date_posted'] . '</td>';
                 echo '<td>' . $row['author'] . '</td>';
@@ -46,7 +57,7 @@
                 echo '</tr>';
             }
             
-    
+            $sth = null;
             $DBH = null;
     
         } catch(PDOException $e) {echo $e->getMessage();}  
