@@ -1,5 +1,20 @@
-<h1> hello </h1>
+<head>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
 
+
+<h1>Add your comment to the forum</h1>
+
+<form action="newEntry.php" method="post">
+    Name: <input type="text" name="name"><br>
+    Content: <input type="text" name="content"><br>
+    <input type="submit">
+</form>
 
 
 <table>
