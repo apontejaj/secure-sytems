@@ -2,7 +2,7 @@
 
 
 <?php 
-    include 'vars.php';
+    include '../vars.php';
 
     echo $SS_DB_HOST;
 
