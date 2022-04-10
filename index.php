@@ -1,8 +1,17 @@
 <h1> hello </h1>
 
 
+
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Author</th>
+        <th>Post</th>
+    </tr>
 <?php 
     include '../vars.php';
+
+    
     
     try {
         $host = $SS_DB_HOST;
@@ -13,13 +22,20 @@
         $DBH = new PDO("mysql:host=$host;dbname=$dbname", $dbuser, $pass);
 
         // //Kill the connection with a KILL Statement.
-        foreach ($DBH->query('select CONNECTION_ID()') as $thingy){
-            echo $thingy['CONNECTION_ID()'];
-        }
-        // //Set the PDO object to NULL.
-        // $DBH = null;
 
-    } catch(PDOException $e) {echo 'Error';}  
+        echo '<tr>';
+        foreach ($DBH->query('SELECT * FROM forum;') as $row){
+            
+            echo '<td>' . $row['date_posted'] . '</td>';
+            echo '<td>' . $row['author'] . '</td>';
+            echo '<td>' . $row['post'] . '</td>';
+            
+        }
+        echo '</tr>';
+
+        $DBH = null;
+
+    } catch(PDOException $e) {echo $e->getMessage();}  
 
     // $sql = "SELECT * FROM `switch` WHERE `user` = ?;";
     // $sth = $DBH->prepare($sql);
@@ -37,9 +53,5 @@
     // echo $allPorts;
 
     // //$status = $result['status'];
-
-
-
-
-
 ?>
+</table>
