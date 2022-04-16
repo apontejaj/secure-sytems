@@ -32,20 +32,41 @@
 
     // In case there is a particular request, display the result for it
     if(isset($_GET['name'])){
-
+    
         try {
+
             # MySQL with PDO_MYSQL
             $DBH = new PDO("mysql:host=$host;dbname=$dbname", $dbuser, $pass);
-    
-            // FIXING VULNERABILITY: Using prepared statements
-            $sql = "SELECT * FROM forum WHERE author LIKE ? OR post LIKE ?;";
-            $sth = $DBH->prepare($sql);
 
             $name = '%'.$_GET['name'].'%';
-            $sth->bindParam(1, $name, PDO::PARAM_STR);
-
             $content = '%'.$_GET['content'].'%';
-            $sth->bindParam(2, $content, PDO::PARAM_STR);
+        
+            if(($_GET['name'] != "") && ($_GET['content'] != "")){
+                // FIXING VULNERABILITY: Using prepared statements
+                $sql = "SELECT * FROM forum WHERE author LIKE ? OR post LIKE ?;";
+                $sth = $DBH->prepare($sql);
+        
+                $sth->bindParam(1, $name, PDO::PARAM_STR);
+                $sth->bindParam(2, $content, PDO::PARAM_STR);
+            }
+            else if(($_GET['name'] != "") && ($_GET['content'] == "")){
+                // FIXING VULNERABILITY: Using prepared statements
+                $sql = "SELECT * FROM forum WHERE author LIKE ?;";
+                $sth = $DBH->prepare($sql);
+        
+                $sth->bindParam(1, $name, PDO::PARAM_STR);
+            }
+            else if(($_GET['name'] == "") && ($_GET['content'] != "")){
+                // FIXING VULNERABILITY: Using prepared statements
+                $sql = "SELECT * FROM forum WHERE post LIKE ?;";
+                $sth = $DBH->prepare($sql);
+        
+                $sth->bindParam(1, $content, PDO::PARAM_STR);
+            }
+            else {
+                $sql = "SELECT * FROM forum;";
+                $sth = $DBH->prepare($sql);
+            }
 
             $sth->execute();
 

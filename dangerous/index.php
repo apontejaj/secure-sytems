@@ -34,12 +34,25 @@
     // In case there is a particular request, display the result for it
     if(isset($_GET['name'])){
 
+        if(($_GET['name'] != "") && ($_GET['content'] != "")){
+            $q = "SELECT * FROM forum WHERE author LIKE '%" . $_GET['name'] . "%' OR post LIKE '%" . $_GET['content'] ."%';";
+        }
+        else if(($_GET['name'] != "") && ($_GET['content'] == "")){
+            $q = "SELECT * FROM forum WHERE author LIKE '%" . $_GET['name'] . "%';";
+        }
+        else if(($_GET['name'] == "") && ($_GET['content'] != "")){
+            $q = "SELECT * FROM forum WHERE post LIKE '%" . $_GET['content'] ."%';";
+        }
+        else {
+            $q = 'SELECT * FROM forum;';
+        }
+
         try {
             // MySQL with PDO_MYSQL
             $DBH = new PDO("mysql:host=$host;dbname=$dbname", $dbuser, $pass);
     
             // VULNERABILTIY: The user input and the query should be sanitised before sending the request to the DB.
-            foreach ($DBH->query("SELECT * FROM forum WHERE author LIKE '%" . $_GET['name'] . "%' OR post LIKE '%" . $_GET['content'] ."%';") as $row){
+            foreach ($DBH->query($q) as $row){
                 echo '<tr>';            
                 echo '<td>' . $row['date_posted'] . '</td>';
                 echo '<td>' . $row['author'] . '</td>';
