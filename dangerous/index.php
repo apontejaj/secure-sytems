@@ -58,7 +58,6 @@
             // MySQL with PDO_MYSQL
             $DBH = new PDO("mysql:host=$host;dbname=$dbname", $dbuser, $pass);
     
-            // VULNERABILTIY: The user input and the query should be sanitised before sending the request to the DB.
             foreach ($DBH->query('SELECT * FROM forum;') as $row){
                 echo '<tr>';            
                 echo '<td>' . $row['date_posted'] . '</td>';
